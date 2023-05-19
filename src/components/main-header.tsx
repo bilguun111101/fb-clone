@@ -29,7 +29,7 @@ import {
 } from "@expo/vector-icons";
 
 import Main from "../screens/Main";
-import { Navbar, Notification, Profile, Stream, Users } from "../screens";
+// import { Navbar, Notification, Profile, Stream, Users } from "../screens";
 import { useHeader } from "../context";
 import theme from "../context/theme";
 
@@ -178,12 +178,13 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 20,
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingRight: 10,
     // height: 50,
   },
   bottomContainer: {
