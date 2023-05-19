@@ -1,4 +1,5 @@
-import MainHeader from "./MainHeader";
-import StorySection from "./Main/StorySection";
+import Post from "./Main/post";
+import MainHeader from "./main-header";
+import StorySection from "./Main/story-section";
 
-export { MainHeader, StorySection };
+export { Post, MainHeader, StorySection };

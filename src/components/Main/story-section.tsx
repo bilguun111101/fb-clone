@@ -8,42 +8,25 @@ import {
   Text,
   View,
 } from "react-native";
-import StoryCard from "./StoryCard";
+import StoryCard from "./story-card";
+import theme from "../../context/theme";
 
 const array = new Array(20).fill(1);
 
 const Create = () => {
   return (
     <View style={styles.create}>
-      <View style={{ position: "relative", width: "100%", height: "60%" }}>
+      <View style={styles.createContent}>
         <Image
           source={require("../../../assets/test.jpg")}
-          style={{ borderRadius: 5, width: "100%", height: "100%" }}
+          style={styles.createAvatar}
         />
-        <Pressable
-          style={{
-            position: "absolute",
-            borderRadius: 100,
-            borderWidth: 3,
-            width: 35,
-            height: 35,
-            zIndex: 10,
-            borderColor: "#fff",
-            bottom: -17,
-            left: "30%",
-            backgroundColor: "blue",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Pressable style={styles.addButton}>
           <Feather name="plus" size={24} color="white" />
         </Pressable>
       </View>
 
-      <Text style={{ fontWeight: "600", fontSize: 10, textAlign: "center" }}>
-        Create story
-      </Text>
+      <Text style={styles.createBottomTitle}>Create story</Text>
     </View>
   );
 };
@@ -51,7 +34,6 @@ const Create = () => {
 const StorySection = () => {
   return (
     <View style={styles.container}>
-      {/* <FlatList data={array} renderItem={} /> */}
       <FlatList
         horizontal
         style={styles.listContent}
@@ -90,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  createContent: { position: "relative", width: "100%", height: "60%" },
   plusIconContent: {
     position: "absolute",
     borderRadius: 100,
@@ -105,4 +88,21 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 10,
   },
+  addButton: {
+    position: "absolute",
+    borderRadius: 100,
+    borderWidth: 3,
+    width: 35,
+    height: 35,
+    zIndex: 10,
+    borderColor: "#fff",
+    bottom: -17,
+    left: "30%",
+    backgroundColor: theme.colors.blue.primary,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  createAvatar: { borderRadius: 5, width: "100%", height: "100%" },
+  createBottomTitle: { fontWeight: "600", fontSize: 10, textAlign: "center" },
 });

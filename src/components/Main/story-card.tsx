@@ -1,5 +1,6 @@
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import React, { FC } from "react";
+import theme from "../../context/theme";
 
 interface StoryCardProps {
   index: number;
@@ -15,19 +16,10 @@ const StoryCard: FC<StoryCardProps> = ({ index, lastIndex }) => {
         marginRight: index === lastIndex ? 20 : null,
       }}
     >
-      <View
-        style={{
-          width: 35,
-          height: 35,
-          padding: 3,
-          borderWidth: 3,
-          borderRadius: 100,
-          borderColor: "blue",
-        }}
-      >
+      <View style={styles.avatarSection}>
         <Image
           source={require("../../../assets/test.jpg")}
-          style={{ width: "100%", height: "100%", borderRadius: 100 }}
+          style={styles.avatar}
         />
       </View>
     </ImageBackground>
@@ -46,4 +38,13 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
   },
+  avatarSection: {
+    width: 35,
+    height: 35,
+    padding: 3,
+    borderWidth: 3,
+    borderRadius: 100,
+    borderColor: theme.colors.blue.primary,
+  },
+  avatar: { width: "100%", height: "100%", borderRadius: 100 },
 });
