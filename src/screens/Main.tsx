@@ -7,67 +7,99 @@ import {
   Image,
   TextInput,
   ScrollView,
+  FlatList,
+  Animated,
+  RefreshControl,
 } from "react-native";
-import { memo } from "react";
-import { StorySection } from "../components";
-import Post from "../components/Main/Post";
+import { memo, useCallback, useState } from "react";
+import { StorySection, Post } from "../components";
+import { FontAwesome } from "@expo/vector-icons";
+import { useHeader } from "../context";
+import theme from "../context/theme";
 
 const Main = () => {
+  const { Change, remove, Height } = useHeader();
+  // const AnimatedHeaderValue = new Animated.Value(0);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+  const onScroll = useCallback(
+    (e: any) => {
+      console.log(e.nativeEvent.contentOffset.y);
+      // if (!remove && e.nativeEvent.contentOffset.y >= 50) {
+      //   Change();
+      // } else if (remove && e.nativeEvent.contentOffset.y <= 50) {
+      //   Change();
+      // }
+      // AnimatedHeaderValue.interpolate({
+      //   inputRange: [0, 50],
+      //   outputRange: ["", ""],
+      //   extrapolate: "clamp",
+      // });
+    },
+    [remove, Change, Height]
+  );
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#EAEDED" }}>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        // onScroll={Animated.event([
+        //   { nativeEvent: { contentOffset: { y: AnimatedHeaderValue } } },
+        // ])}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        scrollEventThrottle={16}
+      >
         <View style={styles.headerSearchContent}>
-          <Pressable style={styles.avatar}>
-            <Image
-              source={require("../../assets/test.jpg")}
-              style={{ width: "100%", height: "100%" }}
+          <View>
+            <Pressable style={styles.avatar}>
+              <Image
+                source={require("../../assets/test.jpg")}
+                style={{ width: "100%", height: "100%" }}
+              />
+            </Pressable>
+          </View>
+          <View style={styles.searchSection}>
+            <TextInput
+              placeholder="write something here..."
+              style={styles.search}
             />
-          </Pressable>
-
-          <TextInput
-            placeholder="write something here..."
-            style={{
-              height: 40,
-              borderWidth: 1,
-              borderRadius: 30,
-              paddingHorizontal: 20,
-              borderColor: "#EAEDED",
-            }}
-          />
-
-          <Pressable
-            style={{
-              width: 30,
-              height: 30,
-              borderWidth: 2,
-              borderColor: "green",
-              borderRadius: 4,
-            }}
-          ></Pressable>
-        </View>
-
-        <View style={styles.typeBtnContent}>
-          <Pressable>
-            <Text style={{ fontWeight: "700", fontSize: 15 }}>stories</Text>
-          </Pressable>
-          <Pressable>
-            <Text style={{ fontWeight: "700", fontSize: 15 }}>reels</Text>
-          </Pressable>
+          </View>
+          <View>
+            <Pressable>
+              <FontAwesome name="file-photo-o" size={24} color="green" />
+            </Pressable>
+          </View>
         </View>
 
         <StorySection />
-
-        <>
-          {new Array(20).fill(1).map((el, idx) => {
+        <View>
+          {/* {new Array(20).fill(1).map((el, idx) => {
             return <Post key={idx} />;
-          })}
-        </>
+          })} */}
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            data={new Array(20).fill(1)}
+            renderItem={(item) => <Post />}
+            keyExtractor={(item, index) => `index-${index}`}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.grey.primary,
+  },
   headerSearchContent: {
     gap: 10,
     width: "100%",
@@ -76,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
+    marginBottom: 10,
     justifyContent: "space-between",
   },
   avatar: {
@@ -87,6 +120,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  searchSection: {
+    flex: 1,
+  },
   typeBtnContent: {
     width: "100%",
     marginVertical: 10,
@@ -95,6 +131,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     justifyContent: "space-around",
+  },
+  search: {
+    width: "100%",
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    borderColor: theme.colors.grey.primary,
   },
 });
 
